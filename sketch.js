@@ -15,31 +15,30 @@ function draw() {
     [300, 250]
   ];
 
- 
   for (let i = 0; i < 3; i++) {
     let a = centers[i];
+    let b = centers[(i + 1) % 3];
 
-    for (let j = 0; j < 24; j++) {
-      let b = centers[(i + 1 + j % 2) % 3];
-
+    for (let j = 0; j < 8; j++) {
       let x = lerp(a[0], b[0], growth);
       let y = lerp(a[1], b[1], growth);
 
+      let bend = sin(frameCount * 0.02 + j) * 40 * growth;
 
-      let bend = (j - 12) * 7
-               + sin(frameCount * 0.02 + j) * 15;
-
-      stroke(150, 220, 180, 80);
-      strokeWeight(1);
+      stroke(150, 220, 180, 120);
+      strokeWeight(1.5);
 
       bezier(
         a[0], a[1],
-        a[0] + bend, a[1] - 70,
-        x - bend, y + 70,
+        lerp(a[0], x, 0.3) + bend,
+        lerp(a[1], y, 0.3) - bend,
+        lerp(a[0], x, 0.7) - bend,
+        lerp(a[1], y, 0.7) + bend,
         x, y
       );
     }
   }
+
 
   fill(150, 220, 180);
   noStroke();
